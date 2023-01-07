@@ -8,16 +8,14 @@ from models import storage_type
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models
-        
     Attributes:
         id (sqlalchemy String): The BaseModel id.
-        created_at (sqlalchemy DateTime): The datetime at creation
-        updated_at (sqlalchemy DateTime): The datetime at last update
-    
+        created_at (sqlalchemy DateTime): The datetime at creation.
+        updated_at (sqlalchemy DateTime): The datetime of last update.
     """
-    
     id = Column(String(60),
                 nullable=False,
                 primary_key=True,
@@ -25,11 +23,10 @@ class BaseModel:
     created_at = Column(DATETIME,
                         nullable=False,
                         default=datetime.utcnow())
-
     updated_at = Column(DATETIME,
                         nullable=False,
+                        default=datetime.utcnow())
 
-        
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -40,8 +37,8 @@ class BaseModel:
             for k in kwargs:
                 if k in ['created_at', 'updated_at']:
                     setattr(self, k, datetime.fromisoformat(kwargs[k]))
-                    elif k != '__class__':
-                        setattr(self, k, kwargs[k])
+                elif k != '__class__':
+                    setattr(self, k, kwargs[k])
             if storage_type == 'db':
                 if not hasattr(kwargs, 'id'):
                     setattr(self, 'id', str(uuid.uuid4()))
@@ -52,8 +49,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return '[{}] ({}) {}'.format(
+            self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -74,6 +71,6 @@ class BaseModel:
         return dct
 
     def delete(self):
-        ''' delete the current instance from the storage'''
+        '''deletes the current instance from the storage'''
         from models import storage
         storage.delete(self)
