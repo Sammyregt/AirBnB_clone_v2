@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 """
 Starts Flask web app
 Listening on 0.0.0.0:5000
@@ -13,6 +13,7 @@ app = Flask(__name__)
 def hello_route():
     """Displays 'Hello HBNB!'"""
     return "Hello HBNB!"
+
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
