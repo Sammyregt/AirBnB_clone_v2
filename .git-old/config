@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://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@github.com/Sammyregt/AirBnB_clone_v2.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
