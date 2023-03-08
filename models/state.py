@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
+import models
+from os import getenv
 from models import storage_type
 from models.city import City
 from sqlalchemy import Column, String
@@ -18,9 +20,8 @@ class State(BaseModel, Base):
         name = ''
 
     def __init__(self, *args, **kwargs):
-        """initializes state"""
+        """initilizes state"""
         super().__init__(*args, **kwargs)
-
 
     if storage_type != 'db':
         @property
