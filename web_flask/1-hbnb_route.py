@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Starts Flask web app
 Listening on 0.0.0.0:5000
