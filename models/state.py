@@ -1,26 +1,34 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.city import City
-import os
+from models.base_model import BaseModel, Base
+from models import my_enviroment
 
 
 class State(BaseModel, Base):
-    """ State class """
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state",
-                          cascade="all, delete-orphan")
+    """Representation of state """
+    __tablename__ = 'states'
+    if my_enviroment == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="state")
+    else:
+        name = ""
 
-    @property
-    def cities(self):
-        """getter attribute cities that returns the list of City"""
-        from models import storage
-        my_list = []
-        extracted_cities = storage.all(City).values()
-        for city in extracted_cities:
-            if self.id == city.state_id:
-                my_list.append(city)
-        return my_list
+    def __init__(self, *args, **kwargs):
+        """initializes state"""
+        super().__init__(*args, **kwargs)
+
+    if my_enviroment != "db":
+        @property
+        def cities(self):
+            """Returns the list of City objects"""
+            from models import storage
+            from models.city import City
+
+            all_cities = storage.all(City)
+            state_cities = [
+                city for city in all_cities.values()
+                if city.state_id == self.id
+            ]
+            return state_cities
